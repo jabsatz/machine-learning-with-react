@@ -5,6 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
+import http from 'http';
 
 import initStore from './init-store';
 import App from './../shared/app';

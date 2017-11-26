@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"license": "MIT",
 	"scripts": {
+		"webpack": "yarn dev:wds",
 		"start": "yarn dev:start",
 		"stop": "yarn prod:stop",
 		"dev:start": "nodemon -e js,jsx --ignore lib --ignore dist --exec babel-node src/server",
@@ -32,6 +33,7 @@
 		"babel-eslint": "^8.0.2",
 		"babel-loader": "^7.1.2",
 		"babel-plugin-flow-react-proptypes": "^9.1.0",
+		"babel-plugin-transform-class-properties": "^6.24.1",
 		"babel-preset-env": "^1.6.1",
 		"babel-preset-flow": "^6.23.0",
 		"babel-preset-react": "^6.24.1",
@@ -67,6 +69,7 @@
 		"redux-actions": "^2.2.1",
 		"redux-thunk": "^2.2.0",
 		"socket.io": "^2.0.4",
-		"socket.io-client": "^2.0.4"
+		"socket.io-client": "^2.0.4",
+		"styled-components": "^2.2.3"
 	}
 }

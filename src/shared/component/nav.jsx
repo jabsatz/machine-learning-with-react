@@ -1,38 +1,46 @@
 // @flow
 
 import React from 'react';
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import {
-	HOME_PAGE_ROUTE,
-	HELLO_PAGE_ROUTE,
-	HELLO_ASYNC_PAGE_ROUTE,
-	NOT_FOUND_DEMO_PAGE_ROUTE,
-} from '../routes';
+import { HOME_PAGE_ROUTE, MACHINE_LEARNING_ROUTE } from '../routes';
+
+const StyledNav = styled.nav``;
+const NavList = styled.ul`
+	display: flex;
+	list-style: none;
+`;
+const NavListItem = styled.li`
+	margin-right: 15px;
+`;
+const StyledNavLink = styled(NavLink)`
+	font-size: 25px;
+	text-decoration: none;
+	color: black;
+	&:hover {
+		color: blue;
+	}
+`;
 
 const Nav = () => (
-	<nav>
-		<ul>
+	<StyledNav>
+		<NavList>
 			{[
 				{ route: HOME_PAGE_ROUTE, label: 'Home' },
-				{ route: HELLO_PAGE_ROUTE, label: 'Say Hello' },
-				{
-					route: HELLO_ASYNC_PAGE_ROUTE,
-					label: 'Say Hello Asynchronously',
-				},
-				{ route: NOT_FOUND_DEMO_PAGE_ROUTE, label: '404 Demo' },
+				{ route: MACHINE_LEARNING_ROUTE, label: 'Machine Learning' },
 			].map(link => (
-				<li key={link.route}>
-					<NavLink
+				<NavListItem key={link.route}>
+					<StyledNavLink
 						to={link.route}
 						activeStyle={{ color: 'limegreen' }}
 						exact
 					>
 						{link.label}
-					</NavLink>
-				</li>
+					</StyledNavLink>
+				</NavListItem>
 			))}
-		</ul>
-	</nav>
+		</NavList>
+	</StyledNav>
 );
 
 export default Nav;

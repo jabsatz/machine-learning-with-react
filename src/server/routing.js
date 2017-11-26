@@ -1,17 +1,11 @@
 // @flow
 
-import {
-	homePage,
-	helloPage,
-	helloAsyncPage,
-	helloEndpoint,
-} from './controller';
+import { homePage, machineLearningPage, serverErrorPage } from './controller';
 
 import {
 	HOME_PAGE_ROUTE,
-	HELLO_PAGE_ROUTE,
-	HELLO_ASYNC_PAGE_ROUTE,
-	helloEndpointRoute,
+	MACHINE_LEARNING_ROUTE,
+	SERVER_ERROR_ROUTE,
 } from '../shared/routes';
 
 import renderApp from './render-app';
@@ -21,20 +15,8 @@ export default (app: Object) => {
 		res.send(renderApp(req.url, homePage()));
 	});
 
-	app.get(HELLO_PAGE_ROUTE, (req, res) => {
-		res.send(renderApp(req.url, helloPage()));
-	});
-
-	app.get(HELLO_ASYNC_PAGE_ROUTE, (req, res) => {
-		res.send(renderApp(req.url, helloAsyncPage()));
-	});
-
-	app.get(helloEndpointRoute(), (req, res) => {
-		res.json(helloEndpoint(req.params.num));
-	});
-
-	app.get('/500', () => {
-		throw Error('Fake Internal Server Error');
+	app.get(MACHINE_LEARNING_ROUTE, (req, res) => {
+		res.send(renderApp(req.url, machineLearningPage()));
 	});
 
 	app.get('*', (req, res) => {
@@ -42,7 +24,9 @@ export default (app: Object) => {
 	});
 
 	app.use((err, req, res, next) => {
-		console.error(err.stack);
-		res.status(500).send('Something went wrong!');
+		const errorLog = '`' + err.stack + '`';
+		const errorPage = renderApp(SERVER_ERROR_ROUTE, serverErrorPage);
+		res.status(500).send(errorPage);
+		next();
 	});
 };
