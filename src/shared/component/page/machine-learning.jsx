@@ -3,8 +3,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import NeuralNetwork from '../neural-network/neural-network';
-import Neuron from '../neural-network/neuron';
-import Dendrite from '../neural-network/dendrite';
 
 const title = 'Machine Learning';
 
@@ -19,7 +17,7 @@ const MachineLearningPage = () => (
 		/>
 		<h1>{title}</h1>
 		<NeuralNetwork
-			networkShape={[2, 2, 2]}
+			networkShape={[2, 4, 2]}
 			activationFunction={a => a}
 			bias={1}
 			inputValues={[3, 4]}

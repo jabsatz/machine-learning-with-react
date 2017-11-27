@@ -1,12 +1,19 @@
 {
 	"env": {
 		"browser": true,
-		"jest": true
+		"es6": true
 	},
 	"settings": {
 		"polyfills": ["fetch"]
 	},
-	"plugins": ["flowtype", "prettier"],
+	"plugins": ["react", "eslint-plugin-react", "flowtype", "prettier"],
+	"ecmaFeatures": {
+		"jsx": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended"
+	],
 	"parser": "babel-eslint",
 	"rules": {
 		"strict": 0,
@@ -86,6 +93,7 @@
 		"no-undef-init": 1,
 		"no-unreachable": 1,
 		"no-use-before-define": [1, "nofunc"],
+		"prefer-const": 1,
 		"semi-spacing": [
 			1,
 			{
@@ -93,11 +101,10 @@
 				"after": true
 			}
 		],
-		"sort-imports": 1,
-		"sort-keys": 2,
 		"use-isnan": 1,
 		"valid-typeof": 1,
 		"wrap-iife": [1, "inside"],
-		"yoda": 0
+		"yoda": 0,
+		"react/jsx-uses-vars": 1
 	}
-};
+}

@@ -1,6 +1,13 @@
 // @flow
-import React, { Component, type Element } from 'react';
-import styled from 'styled-components';
+import React, { Component } from 'react';
+import type {
+	dendriteObject,
+	neuronObject,
+	layerObject,
+	networkObject,
+	positionObject,
+	networkPositionsObject,
+} from './types';
 import Dendrite from './dendrite';
 import Neuron from './neuron';
 
@@ -12,70 +19,21 @@ type Props = {
 };
 
 type State = {
-	network: Array<{
-		neurons: Array<{
-			key: string,
-			activation: (number: number) => number,
-			bias: number,
-			input: Array<string> | number,
-			output: number,
-		}>,
-		dendrites: Array<{
-			key: string,
-			weight: number,
-			source: string,
-			destination: string,
-		}>,
-	}>,
+	network: networkObject,
 };
-
-const Network = styled.div`
-	margin: 10px;
-	background: lightgrey;
-	padding: 10px;
-	display: flex;
-`;
-const Layer = styled.div`
-	display: flex;
-	margin-right: auto;
-	margin-left: auto;
-`;
-const Neurons = styled.div`
-	background: darkseagreen;
-`;
-const Dendrites = styled.div`
-	margin-right: auto;
-	background: cadetblue;
-	margin-left: auto;
-`;
-
-Network.displayName = 'Network';
-Layer.displayName = 'Layer';
-Neurons.displayName = 'Neurons';
-Dendrites.displayName = 'Dendrites';
 
 export default class NeuralNetwork extends Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 
-		const network: Array<{
-			neurons: Array<{
-				key: string,
-				activation: (number: number) => number,
-				bias: number,
-				input: Array<string> | number,
-				output: number,
-			}>,
-			dendrites: Array<{
-				key: string,
-				weight: number,
-				source: string,
-				destination: string,
-			}>,
-		}> = [];
+		const network: networkObject = [];
+
+		const networkPositions: networkPositionsObject = this.calculateSVGSizeAndPositions(
+			props.networkShape
+		);
 
 		props.networkShape.forEach((layerLength, layerIndex) => {
-			let layer = {
+			const layer: layerObject = {
 				neurons: [],
 				dendrites: [],
 			};
@@ -86,27 +44,35 @@ export default class NeuralNetwork extends Component<Props, State> {
 						j < network[layerIndex - 1].neurons.length;
 						j++
 					) {
-						const previousNeuron =
+						const previousNeuron: neuronObject =
 							network[layerIndex - 1].neurons[j];
-						const dendrite = {
-							key: `dendrite-${layerIndex}-${j}-${i}`,
-							weight: 0,
-							source: `neuron-${layerIndex - 1}-${j}`,
-							destination: `neuron-${layerIndex}-${i}`,
+						const weight = 1;
+						const dendrite: dendriteObject = {
+							id: `dendrite-${layerIndex}-${j}-${i}`,
+							weight: weight,
+							input: previousNeuron.output,
+							output: weight * previousNeuron.output,
+							source: networkPositions[layerIndex - 1][j],
+							destination: networkPositions[layerIndex][i],
 						};
 						layer.dendrites.push(dendrite);
 					}
 				}
 				const input =
 					layer.dendrites.length > 0
-						? layer.dendrites.map(d => d.key)
+						? layer.dendrites
 						: props.inputValues[i] || 0;
-				const neuron = {
-					key: `neuron-${layerIndex}-${i}`,
+				const neuron: neuronObject = {
+					id: `neuron-${layerIndex}-${i}`,
 					activation: props.activationFunction,
 					bias: props.bias,
 					input,
-					output: 0,
+					output: this.calculateNeuronOutput(
+						input,
+						props.bias,
+						props.activationFunction
+					),
+					position: networkPositions[layerIndex][i],
 				};
 				layer.neurons.push(neuron);
 			}
@@ -117,36 +83,81 @@ export default class NeuralNetwork extends Component<Props, State> {
 		};
 	}
 
+	calculateSVGSizeAndPositions(
+		network: Array<number>
+	): networkPositionsObject {
+		const neuronSize = 100;
+		const layerMargin = 200;
+		const networkPositions: networkPositionsObject = network.map(
+			(layerLength, layerIndex) => {
+				const layerPositions: Array<positionObject> = [];
+				for (let i = 0; i < layerLength; i++) {
+					layerPositions.push({
+						x:
+							layerIndex * neuronSize +
+							neuronSize / 2 +
+							layerMargin * layerIndex,
+						y: i * neuronSize + neuronSize / 2,
+					});
+				}
+				return layerPositions;
+			}
+		);
+		return networkPositions;
+	}
+
+	calculateNeuronOutput(
+		input: Array<dendriteObject> | number,
+		bias: number,
+		activation: (n: number) => number
+	): number {
+		let weighedSum: number;
+		if (typeof input === 'number') {
+			weighedSum = input;
+		} else {
+			weighedSum = input.reduce(
+				(prev, curr): number => curr.output + prev,
+				0
+			);
+		}
+		return activation(weighedSum + bias);
+	}
+
 	render() {
 		return (
-			<Network>
+			<svg id="Network" height="700" width="700">
 				{this.state.network.map((layer, i) => (
-					<Layer key={i}>
-						<Dendrites>
-							{layer.dendrites.map(dendrite => (
+					<g id={`dendrite-layer-${i}`} key={`dendrite-layer-${i}`}>
+						{layer.dendrites.length > 0 &&
+							layer.dendrites.map(dendrite => (
 								<Dendrite
-									key={dendrite.key}
-									name={dendrite.key}
+									key={dendrite.id}
+									name={dendrite.id}
 									weight={dendrite.weight}
 									source={dendrite.source}
+									destination={dendrite.destination}
+									input={dendrite.input}
+									output={dendrite.output}
 								/>
 							))}
-						</Dendrites>
-						<Neurons>
-							{layer.neurons.map(neuron => (
-								<Neuron
-									key={neuron.key}
-									name={neuron.key}
-									input={neuron.input}
-									output={neuron.output}
-									activation={neuron.activation}
-									bias={neuron.bias}
-								/>
-							))}
-						</Neurons>
-					</Layer>
+					</g>
 				))}
-			</Network>
+				{this.state.network.map((layer, i) => (
+					<g id={`neuron-layer-${i}`} key={`neuron-layer-${i}`}>
+						{layer.neurons.map((neuron, j) => (
+							<Neuron
+								key={neuron.id}
+								name={neuron.id}
+								position={neuron.position}
+								input={neuron.input}
+								output={neuron.output}
+								activation={neuron.activation}
+								bias={neuron.bias}
+							/>
+						))}
+					</g>
+				))}
+			</svg>
 		);
 	}
 }

@@ -1,14 +1,14 @@
 // @flow
 import React, { Component } from 'react';
-import Dendrite from './dendrite';
+import type { dendriteObject, positionObject } from './types';
 
 type Props = {
 	name: string,
-	input: Array<string> | number,
+	input: Array<dendriteObject> | number,
 	output: number,
 	bias: number,
 	activation: (number: number) => number,
-	onOutputCalculated: (number: number) => any,
+	position: positionObject,
 };
 
 type State = {
@@ -18,22 +18,7 @@ type State = {
 export default class Neuron extends Component<Props, State> {
 	static defaultProps = {
 		activation: (n: number): number => n,
-		onOutputCalculated: (n: number): void => {},
 	};
-
-	constructor(props: Props) {
-		super(props);
-
-		this.state = {
-			output: this.calculateNeuronOutput(props),
-		};
-	}
-
-	componentWillReceiveProps(props: Props) {
-		this.setState({
-			output: this.calculateNeuronOutput(props),
-		});
-	}
 
 	calculateWeightedSum(props: Props): number {
 		if (!props.input) {
@@ -44,30 +29,30 @@ export default class Neuron extends Component<Props, State> {
 		}
 		return props.input
 			.map((dendrite): number => {
-				if (dendrite.weighedValue) {
-					return dendrite.weighedValue;
-				}
-				return 0;
+				return dendrite.output;
 			})
 			.reduce((prev, curr) => prev + curr, 0);
 	}
 
-	calculateNeuronOutput(props: Props): number {
-		if (typeof props.input === 'number') {
-			return props.input;
-		}
-		const output = props.activation(
-			this.calculateWeightedSum(props) + props.bias
-		);
-		props.onOutputCalculated(output);
-		return output;
-	}
-
 	render() {
+		const { x, y } = this.props.position;
 		return (
-			<div>
-				{this.props.name}: {this.state.output}
-			</div>
+			<g id={this.props.name}>
+				<circle
+					cx={x}
+					cy={y}
+					r="50"
+					stroke="black"
+					strokeWidth="1"
+					fill="white"
+				/>
+				<text x={x - 20} y={y - 10} fontSize="12">
+					bias: {this.props.bias}
+				</text>
+				<text x={x - 25} y={y + 10} fontSize="12">
+					output: {this.props.output}
+				</text>
+			</g>
 		);
 	}
 }
