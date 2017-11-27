@@ -50,7 +50,7 @@ export default class Neuron extends Component<Props, State> {
 					bias: {this.props.bias}
 				</text>
 				<text x={x - 25} y={y + 10} fontSize="12">
-					output: {this.props.output}
+					output: {Math.round(this.props.output * 100) / 100}
 				</text>
 			</g>
 		);

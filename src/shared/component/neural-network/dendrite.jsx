@@ -32,10 +32,8 @@ export default class Dendrite extends Component<Props> {
 					d={`M${sx} ${sy} L ${dx} ${dy}`}
 					fill="transparent"
 					stroke="black"
+					strokeWidth={this.props.weight}
 				/>
-				<text x={(dx + sx) / 2} y={(dy + sy) / 2}>
-					weight: {this.props.weight}
-				</text>
 			</g>
 		);
 	}

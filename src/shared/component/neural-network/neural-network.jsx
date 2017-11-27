@@ -20,6 +20,7 @@ type Props = {
 
 type State = {
 	network: networkObject,
+	valuesForPropagation: Array<number>,
 };
 
 export default class NeuralNetwork extends Component<Props, State> {
@@ -31,6 +32,8 @@ export default class NeuralNetwork extends Component<Props, State> {
 		const networkPositions: networkPositionsObject = this.calculateSVGSizeAndPositions(
 			props.networkShape
 		);
+
+		const valuesForPropagation: Array<number> = [];
 
 		props.networkShape.forEach((layerLength, layerIndex) => {
 			const layer: layerObject = {
@@ -46,7 +49,7 @@ export default class NeuralNetwork extends Component<Props, State> {
 					) {
 						const previousNeuron: neuronObject =
 							network[layerIndex - 1].neurons[j];
-						const weight = 1;
+						const weight = Math.random() * 3;
 						const dendrite: dendriteObject = {
 							id: `dendrite-${layerIndex}-${j}-${i}`,
 							weight: weight,
@@ -62,31 +65,36 @@ export default class NeuralNetwork extends Component<Props, State> {
 					layer.dendrites.length > 0
 						? layer.dendrites
 						: props.inputValues[i] || 0;
+				const output = this.calculateNeuronOutput(
+					input,
+					props.bias,
+					props.activationFunction
+				);
 				const neuron: neuronObject = {
 					id: `neuron-${layerIndex}-${i}`,
 					activation: props.activationFunction,
 					bias: props.bias,
 					input,
-					output: this.calculateNeuronOutput(
-						input,
-						props.bias,
-						props.activationFunction
-					),
+					output,
 					position: networkPositions[layerIndex][i],
 				};
 				layer.neurons.push(neuron);
+				if (layerIndex === props.networkShape.length - 1) {
+					valuesForPropagation.push(output);
+				}
 			}
 			network.push(layer);
 		});
 		this.state = {
 			network,
+			valuesForPropagation,
 		};
 	}
 
 	calculateSVGSizeAndPositions(
 		network: Array<number>
 	): networkPositionsObject {
-		const neuronSize = 100;
+		const neuronSize = 120;
 		const layerMargin = 200;
 		const networkPositions: networkPositionsObject = network.map(
 			(layerLength, layerIndex) => {
@@ -123,41 +131,71 @@ export default class NeuralNetwork extends Component<Props, State> {
 		return activation(weighedSum + bias);
 	}
 
+	backPropagataion(e: Event): void {}
+	onChangePropagation = (e: Event): void => {
+		if (e.target instanceof HTMLInputElement) {
+			const valuesForPropagation = this.state.valuesForPropagation;
+			valuesForPropagation[parseInt(e.target.id)] = parseInt(
+				e.target.value
+			);
+			this.setState({ valuesForPropagation });
+		}
+	};
+
 	render() {
+		const { network, valuesForPropagation } = this.state;
 		return (
-			<svg id="Network" height="700" width="700">
-				{this.state.network.map((layer, i) => (
-					<g id={`dendrite-layer-${i}`} key={`dendrite-layer-${i}`}>
-						{layer.dendrites.length > 0 &&
-							layer.dendrites.map(dendrite => (
-								<Dendrite
-									key={dendrite.id}
-									name={dendrite.id}
-									weight={dendrite.weight}
-									source={dendrite.source}
-									destination={dendrite.destination}
-									input={dendrite.input}
-									output={dendrite.output}
+			<div>
+				{network[network.length - 1].neurons.map((n, i) => (
+					<input
+						key={`${i}-backprop`}
+						id={`${i}`}
+						type="text"
+						value={valuesForPropagation[i]}
+						placeholder={`${n.id} expected value`}
+						onChange={this.onChangePropagation}
+					/>
+				))}
+				<button onClick={this.backPropagataion}>
+					Back Propagation
+				</button>
+				<svg id="Network" height="700" width="1000">
+					{network.map((layer, i) => (
+						<g
+							id={`dendrite-layer-${i}`}
+							key={`dendrite-layer-${i}`}
+						>
+							{layer.dendrites.length > 0 &&
+								layer.dendrites.map(dendrite => (
+									<Dendrite
+										key={dendrite.id}
+										name={dendrite.id}
+										weight={dendrite.weight}
+										source={dendrite.source}
+										destination={dendrite.destination}
+										input={dendrite.input}
+										output={dendrite.output}
+									/>
+								))}
+						</g>
+					))}
+					{network.map((layer, i) => (
+						<g id={`neuron-layer-${i}`} key={`neuron-layer-${i}`}>
+							{layer.neurons.map((neuron, j) => (
+								<Neuron
+									key={neuron.id}
+									name={neuron.id}
+									position={neuron.position}
+									input={neuron.input}
+									output={neuron.output}
+									activation={neuron.activation}
+									bias={neuron.bias}
 								/>
 							))}
-					</g>
-				))}
-				{this.state.network.map((layer, i) => (
-					<g id={`neuron-layer-${i}`} key={`neuron-layer-${i}`}>
-						{layer.neurons.map((neuron, j) => (
-							<Neuron
-								key={neuron.id}
-								name={neuron.id}
-								position={neuron.position}
-								input={neuron.input}
-								output={neuron.output}
-								activation={neuron.activation}
-								bias={neuron.bias}
-							/>
-						))}
-					</g>
-				))}
-			</svg>
+						</g>
+					))}
+				</svg>
+			</div>
 		);
 	}
 }
