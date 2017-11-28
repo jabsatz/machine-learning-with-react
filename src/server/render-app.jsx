@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { StaticRouter } from 'react-router';
-import http from 'http';
 
 import App from './../shared/app';
 import { APP_CONTAINER_CLASS, STATIC_PATH, WDS_PORT } from '../shared/config';
@@ -32,7 +31,7 @@ const renderApp = (
       <body>
         <div class="${APP_CONTAINER_CLASS}">${appHtml}</div>
         <script src="${
-			isProd ? STATIC_PATH : `http://localhost:${WDS_PORT}/dist`
+			isProd ? STATIC_PATH : '/dist'
 		}/js/bundle.js"></script>
       </body>
     </html>`;
