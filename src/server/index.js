@@ -4,9 +4,9 @@ import compression from 'compression';
 import express from 'express';
 import { Server } from 'http';
 
-import routing from './routing';
-import { WEB_PORT, STATIC_PATH } from '../shared/config';
-import { isProd } from '../shared/util';
+import routing from 'server/routing';
+import { WEB_PORT, STATIC_PATH } from 'app/constants/config';
+import { isProd } from 'app/constants/util';
 import devConfig from '../../webpack.config.babel';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';

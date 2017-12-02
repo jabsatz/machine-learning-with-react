@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import NeuralNetwork from '../neural-network/neural-network';
+import NeuralNetwork from 'app/component/neural-network/neural-network';
 
 const title = 'Machine Learning';
 

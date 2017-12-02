@@ -1,6 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import type { dendriteObject, positionObject } from './types';
+import type {
+	dendriteObject,
+	positionObject,
+} from 'app/component/neural-network/types';
 
 type Props = {
 	name: string,

@@ -5,9 +5,9 @@ import ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { StaticRouter } from 'react-router';
 
-import App from './../shared/app';
-import { APP_CONTAINER_CLASS, STATIC_PATH, WDS_PORT } from '../shared/config';
-import { isProd } from '../shared/util';
+import App from 'app/app';
+import { APP_CONTAINER_CLASS, STATIC_PATH } from 'app/constants/config';
+import { isProd } from 'app/constants/util';
 
 const renderApp = (
 	location: string,
@@ -30,9 +30,7 @@ const renderApp = (
       </head>
       <body>
         <div class="${APP_CONTAINER_CLASS}">${appHtml}</div>
-        <script src="${
-			isProd ? STATIC_PATH : '/dist'
-		}/js/bundle.js"></script>
+        <script src="${isProd ? STATIC_PATH : '/dist'}/js/bundle.js"></script>
       </body>
     </html>`;
 };

@@ -7,9 +7,9 @@ import type {
 	networkObject,
 	positionObject,
 	networkPositionsObject,
-} from './types';
-import Dendrite from './dendrite';
-import Neuron from './neuron';
+} from 'app/component/neural-network/types';
+import Dendrite from 'app/component/neural-network/dendrite';
+import Neuron from 'app/component/neural-network/neuron';
 
 type Props = {
 	networkShape: Array<number>,

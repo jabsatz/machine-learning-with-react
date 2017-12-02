@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { HOME_PAGE_ROUTE, MACHINE_LEARNING_ROUTE } from '../routes';
+import { HOME_PAGE_ROUTE, MACHINE_LEARNING_ROUTE } from 'app/constants/routes';
 
 const StyledNav = styled.nav``;
 const NavList = styled.ul`

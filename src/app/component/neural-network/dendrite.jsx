@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import type { positionObject } from './types.js';
+import type { positionObject } from 'app/component/neural-network/types';
 
 type Props = {
 	name: string,

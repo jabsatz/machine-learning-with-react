@@ -1,14 +1,18 @@
 // @flow
 
-import { homePage, machineLearningPage, serverErrorPage } from './controller';
+import {
+	homePage,
+	machineLearningPage,
+	serverErrorPage,
+} from 'server/controller';
 
 import {
 	HOME_PAGE_ROUTE,
 	MACHINE_LEARNING_ROUTE,
 	SERVER_ERROR_ROUTE,
-} from '../shared/routes';
+} from 'app/constants/routes';
 
-import renderApp from './render-app';
+import renderApp from 'server/render-app';
 
 export default (app: Object) => {
 	app.get(HOME_PAGE_ROUTE, (req, res) => {

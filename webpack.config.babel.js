@@ -3,8 +3,8 @@
 import path from 'path';
 import webpack from 'webpack';
 
-import { WDS_PORT } from './src/shared/config';
-import { isProd } from './src/shared/util';
+import { WDS_PORT } from 'app/constants/config';
+import { isProd } from 'app/constants/util';
 
 export default {
 	entry: ['react-hot-loader/patch', './src/client'],
@@ -25,6 +25,17 @@ export default {
 	devtool: isProd ? false : 'source-map',
 	resolve: {
 		extensions: ['.js', '.jsx'],
+		root: [path.join(__dirname, '/')],
+		fallback: [path.join(__dirname, '/node_modules')],
+		alias: {
+			server: path.join(__dirname, '/src/server'),
+			client: path.join(__dirname, '/src/client'),
+			app: path.join(__dirname, '/src/app'),
+		},
+	},
+	resolveLoader: {
+		root: [path.join(__dirname, '/node_modules')],
+		fallback: [path.join(__dirname, '/node_modules')],
 	},
 	devServer: {
 		port: WDS_PORT,

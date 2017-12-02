@@ -4,17 +4,17 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Switch } from 'react-router';
 import { Route } from 'react-router-dom';
-import { APP_NAME } from './config';
-import Nav from './component/nav';
-import HomePage from './component/page/home';
-import MachineLearningPage from './component/page/machine-learning';
-import NotFoundPage from './component/page/not-found';
-import ServerErrorPage from './component/page/server-error';
+import { APP_NAME } from 'app/constants/config';
+import Nav from 'app/component/nav';
+import HomePage from 'app/component/page/home';
+import MachineLearningPage from 'app/component/page/machine-learning';
+import NotFoundPage from 'app/component/page/not-found';
+import ServerErrorPage from 'app/component/page/server-error';
 import {
 	HOME_PAGE_ROUTE,
 	MACHINE_LEARNING_ROUTE,
 	SERVER_ERROR_ROUTE,
-} from './routes';
+} from 'app/constants/routes';
 
 const App = () => (
 	<div>

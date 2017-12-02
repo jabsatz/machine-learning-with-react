@@ -7,11 +7,11 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { BrowserRouter } from 'react-router-dom';
 
-import App from '../shared/app';
-import { APP_CONTAINER_SELECTOR } from '../shared/config';
+import App from 'app/app';
+import { APP_CONTAINER_SELECTOR } from 'app/constants/config';
 /*eslint-disable*/
 //setting window variables
-import { isProd } from '../shared/util';
+import { isProd } from 'app/constants/util';
 
 const preloadedState = window.__PRELOADED_STATE__;
 /*eslint-enable*/
@@ -35,8 +35,8 @@ ReactDOM.render(wrapApp(App), rootEl);
 /*eslint-disable*/
 if (module.hot) {
 	// flow-disable-next-line
-	module.hot.accept('../shared/app', () => {
-		const NextApp = require('../shared/app').default;
+	module.hot.accept('app/app', () => {
+		const NextApp = require('app/app').default;
 		ReactDOM.render(wrapApp(NextApp), rootEl);
 	});
 }

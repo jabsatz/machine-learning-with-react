@@ -1,2 +1,6 @@
 [options]
 suppress_comment= \\(.\\|\n\\)*\\flow-disable-next-line
+module.name_mapper='^server' ->'<PROJECT_ROOT>/src/server'
+module.name_mapper='^client' ->'<PROJECT_ROOT>/src/client'
+module.name_mapper='^app' ->'<PROJECT_ROOT>/src/app'
+module.name_mapper='^/\(.*\)$' -> '<PROJECT_ROOT>/\1'
