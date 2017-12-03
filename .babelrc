@@ -1,4 +1,12 @@
 {
 	"presets": ["env", "flow", "react"],
-	"plugins": ["flow-react-proptypes", "transform-class-properties"]
+	"plugins": [
+		"flow-react-proptypes",
+		"transform-class-properties",
+		"babel-plugin-root-import",
+		"babel-plugin-styled-components",
+		["module-resolver", {
+			"root": ["./src"]
+		}]
+	]
 }

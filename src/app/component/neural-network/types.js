@@ -1,6 +1,11 @@
 // @flow
 export type positionObject = { x: number, y: number };
 
+export type activationFunction = {
+	function: (n: number) => number,
+	derivative: (n: number) => number,
+};
+
 export type dendriteObject = {
 	id: string,
 	weight: number,
@@ -16,7 +21,7 @@ export type neuronObject = {
 	input: Array<dendriteObject> | number,
 	output: number,
 	bias: number,
-	activation: (n: number) => number,
+	activation: activationFunction,
 };
 
 export type layerObject = {

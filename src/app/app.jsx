@@ -15,9 +15,16 @@ import {
 	MACHINE_LEARNING_ROUTE,
 	SERVER_ERROR_ROUTE,
 } from 'app/constants/routes';
+import styled from 'styled-components';
+
+const AppWrapper = styled.div`
+	width: 960px;
+	margin: auto;
+	font-family: sans-serif;
+`;
 
 const App = () => (
-	<div>
+	<AppWrapper>
 		<Helmet titleTemplate={`%s | ${APP_NAME}`} defaultTitle={APP_NAME} />
 		<Nav />
 		<Switch>
@@ -30,7 +37,7 @@ const App = () => (
 			<Route path={SERVER_ERROR_ROUTE} component={ServerErrorPage} />
 			<Route component={NotFoundPage} />
 		</Switch>
-	</div>
+	</AppWrapper>
 );
 
 export default App;

@@ -25,17 +25,11 @@ export default {
 	devtool: isProd ? false : 'source-map',
 	resolve: {
 		extensions: ['.js', '.jsx'],
-		root: [path.join(__dirname, '/')],
-		fallback: [path.join(__dirname, '/node_modules')],
-		alias: {
-			server: path.join(__dirname, '/src/server'),
-			client: path.join(__dirname, '/src/client'),
-			app: path.join(__dirname, '/src/app'),
-		},
-	},
-	resolveLoader: {
-		root: [path.join(__dirname, '/node_modules')],
-		fallback: [path.join(__dirname, '/node_modules')],
+		modules: [
+			path.resolve(__dirname, 'src'),
+			path.resolve(__dirname, 'src', 'app'),
+			'node_modules',
+		],
 	},
 	devServer: {
 		port: WDS_PORT,

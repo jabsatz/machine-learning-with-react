@@ -6,6 +6,11 @@ import NeuralNetwork from 'app/component/neural-network/neural-network';
 
 const title = 'Machine Learning';
 
+const activation = {
+	function: a => a,
+	derivative: a => a,
+};
+
 const MachineLearningPage = () => (
 	<div>
 		<Helmet
@@ -18,7 +23,7 @@ const MachineLearningPage = () => (
 		<h1>{title}</h1>
 		<NeuralNetwork
 			networkShape={[2, 4, 2]}
-			activationFunction={a => a}
+			activationFunction={activation}
 			bias={1}
 			inputValues={[3, 4]}
 		/>

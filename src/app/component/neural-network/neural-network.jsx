@@ -7,13 +7,14 @@ import type {
 	networkObject,
 	positionObject,
 	networkPositionsObject,
+	activationFunction,
 } from 'app/component/neural-network/types';
 import Dendrite from 'app/component/neural-network/dendrite';
 import Neuron from 'app/component/neural-network/neuron';
 
 type Props = {
 	networkShape: Array<number>,
-	activationFunction: (number: number) => number,
+	activationFunction: activationFunction,
 	bias: number,
 	inputValues: Array<number>,
 };
@@ -117,7 +118,7 @@ export default class NeuralNetwork extends Component<Props, State> {
 	calculateNeuronOutput(
 		input: Array<dendriteObject> | number,
 		bias: number,
-		activation: (n: number) => number
+		activation: activationFunction
 	): number {
 		let weighedSum: number;
 		if (typeof input === 'number') {
@@ -128,7 +129,7 @@ export default class NeuralNetwork extends Component<Props, State> {
 				0
 			);
 		}
-		return activation(weighedSum + bias);
+		return activation.function(weighedSum + bias);
 	}
 
 	backPropagataion(e: Event): void {}
@@ -188,7 +189,6 @@ export default class NeuralNetwork extends Component<Props, State> {
 									position={neuron.position}
 									input={neuron.input}
 									output={neuron.output}
-									activation={neuron.activation}
 									bias={neuron.bias}
 								/>
 							))}

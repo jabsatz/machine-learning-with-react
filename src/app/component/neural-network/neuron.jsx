@@ -10,7 +10,6 @@ type Props = {
 	input: Array<dendriteObject> | number,
 	output: number,
 	bias: number,
-	activation: (number: number) => number,
 	position: positionObject,
 };
 
@@ -19,10 +18,6 @@ type State = {
 };
 
 export default class Neuron extends Component<Props, State> {
-	static defaultProps = {
-		activation: (n: number): number => n,
-	};
-
 	calculateWeightedSum(props: Props): number {
 		if (!props.input) {
 			return 0;

@@ -7,9 +7,6 @@
 		"polyfills": ["fetch"]
 	},
 	"plugins": ["react", "eslint-plugin-react", "flowtype", "prettier"],
-	"ecmaFeatures": {
-		"jsx": true
-	},
 	"extends": [
 		"eslint:recommended",
 		"plugin:react/recommended"
