@@ -32,3 +32,5 @@ export type layerObject = {
 export type networkObject = Array<layerObject>;
 
 export type networkPositionsObject = Array<Array<positionObject>>;
+
+export type propagationErrorObject = Array<Array<number>>;

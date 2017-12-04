@@ -7,6 +7,7 @@ import type {
 	networkObject,
 	positionObject,
 	networkPositionsObject,
+	propagationErrorObject,
 	activationFunction,
 } from 'app/component/neural-network/types';
 import Dendrite from 'app/component/neural-network/dendrite';
@@ -132,7 +133,30 @@ export default class NeuralNetwork extends Component<Props, State> {
 		return activation.function(weighedSum + bias);
 	}
 
-	backPropagataion(e: Event): void {}
+	backPropagataion = (e: Event): void => {
+		const network = this.state.network.reverse();
+		const propagationError: propagationErrorObject = [];
+
+		network.map((layer, layerIndex) => {
+			const layerError: Array<number> = [];
+			let expectedValues: Array<number>;
+
+			if (layerIndex === 0) {
+				expectedValues = this.state.valuesForPropagation;
+			} else {
+				expectedValues = propagationError[layerIndex - 1];
+			}
+
+			layer.neurons.forEach((neuron, neuronIndex) => {
+				const neuronError =
+					neuron.activation.derivative(neuron.output) *
+					(expectedValues[neuronIndex] - neuron.output);
+				layerError.push(neuronError);
+			});
+			propagationError.push(layerError);
+		});
+	};
+
 	onChangePropagation = (e: Event): void => {
 		if (e.target instanceof HTMLInputElement) {
 			const valuesForPropagation = this.state.valuesForPropagation;
