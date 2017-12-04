@@ -158,13 +158,11 @@ export default class NeuralNetwork extends Component<Props, State> {
 	};
 
 	onChangePropagation = (e: Event): void => {
-		if (e.target instanceof HTMLInputElement) {
-			const valuesForPropagation = this.state.valuesForPropagation;
-			valuesForPropagation[parseInt(e.target.id)] = parseInt(
-				e.target.value
-			);
-			this.setState({ valuesForPropagation });
-		}
+		const id = e.target instanceof Element ? parseInt(e.target.id) : 0;
+		const value = e.target instanceof HTMLInputElement ? parseFloat(e.target.value) : 0;
+		const valuesForPropagation = this.state.valuesForPropagation;
+		valuesForPropagation[id] = value;
+		this.setState({ valuesForPropagation });
 	};
 
 	render() {

@@ -28,7 +28,6 @@ export default (app: Object) => {
 	});
 
 	app.use((err, req, res, next) => {
-		const errorLog = '`' + err.stack + '`';
 		const errorPage = renderApp(SERVER_ERROR_ROUTE, serverErrorPage);
 		res.status(500).send(errorPage);
 		next();
